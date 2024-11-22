@@ -1,7 +1,7 @@
 # adminPanel-signup
 <h2>after biuld tscongif.ts
 </h2>
-<h3>typescript compile with javascript vs terminal :</h3>
+<h3>typescript compile with javascript in vs terminal :</h3>
 <h3>npm install -g typescript
 </h3>
 <h3>tsc --watch
