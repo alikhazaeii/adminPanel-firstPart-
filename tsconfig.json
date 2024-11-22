@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es6",                  // نسخه خروجی جاوااسکریپت
+    "module": "commonjs",             // استفاده از ماژول‌های CommonJS
+    "strict": true,                   // فعال کردن قوانین سختگیرانه
+    "outDir": "./asset/dist",               // مسیر خروجی فایل‌های کامپایل‌شده
+    "rootDir": "./asset/src",               // مسیر فایل‌های ورودی تایپ‌اسکریپت
+    "esModuleInterop": true           // سازگاری با ماژول‌های ES
+  },
+
+}
