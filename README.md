@@ -3,7 +3,8 @@
 </h2>
 <h3>typescript compile white css in vs terminal :</h3>
 <h3>npm install -g typescript
-tsc --watch
+</h3>
+<h3>tsc --watch
 </h3>
 
 
