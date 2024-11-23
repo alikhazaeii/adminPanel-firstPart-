@@ -1,5 +1,5 @@
 # adminPanel-signup
-<h2>after biuld tscongif.ts
+<h2>after biuld tscongif.json
 </h2>
 <h3>typescript compile with javascript in vs terminal :</h3>
 <h3>npm install -g typescript
