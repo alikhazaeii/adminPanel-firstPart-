@@ -1,14 +1,38 @@
 "use strict";
 const Name = document.getElementById('name');
-console.log(Name);
+// console.log(Name);
 const lastname = document.getElementById('lname');
-console.log(lastname);
-const emali = document.querySelector('#email');
-console.log(emali);
+// console.log(lastname);
+const email = document.querySelector('#email');
+// console.log(email);
 const age = document.querySelector('#Age');
-console.log(age);
-const btn = document.querySelector('button');
+// console.log(age);
+const signUpBtn = document.querySelector('.signup>button');
+// console.log(signUpBtn);
 const h2 = document.querySelector('h2');
+const pass = document.querySelector('#password');
+const signUpForm = document.querySelector('.signup');
+// console.log(signUpForm);
+const logIngForm = document.querySelector('.login');
+// console.log(logIngForm);
+/////////////////////////////////////////change Forms//////////////////////////////////////
+const signUpA = document.querySelector('.signup>p>a');
+// console.log(signUpA);
+const logInA = document.querySelector('.login>p>a');
+// console.log(logInA);
+const inp = document.querySelectorAll('input');
+// console.log(inp);
+logInA === null || logInA === void 0 ? void 0 : logInA.addEventListener('click', () => {
+    logIngForm.classList.add('go');
+    signUpForm.classList.add('come');
+});
+signUpA.addEventListener('click', () => {
+    logIngForm.classList.remove('go');
+    signUpForm.classList.remove('come');
+});
+////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////url//////////////////////////////////////
+const url = new URL('https://673fa428a9bc276ec4b93059.mockapi.io/signupform/');
 if (h2) {
     setInterval(() => {
         const day = new Date().getDay();
@@ -32,16 +56,21 @@ if (h2) {
 }
 const div = document.querySelector('div');
 const h3 = document.createElement('h3');
-btn === null || btn === void 0 ? void 0 : btn.addEventListener('click', () => {
-    if (Name.value != '' && lastname.value != '' && emali.value != '' && age.value != '') {
+const loginBtn = document.querySelector('.login>button');
+const invalid = document.querySelector('.invalid');
+signUpBtn === null || signUpBtn === void 0 ? void 0 : signUpBtn.addEventListener('click', () => {
+    //    console.log(signUpBtn);
+    if (Name.value != '' && lastname.value != '' && email.value != '' && age.value != '' && pass.value != '') {
+        // alert('ok')
         const form = {
             name: Name.value,
             lastname: lastname.value,
-            email: emali.value,
+            email: email.value,
             age: age.value,
-            date: h2.innerHTML
+            date: h2.innerHTML,
+            password: pass.value,
         };
-        fetch('https://673fa428a9bc276ec4b93059.mockapi.io/signupform', {
+        fetch(url, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             // Send your data in the request body as JSON
@@ -53,9 +82,10 @@ btn === null || btn === void 0 ? void 0 : btn.addEventListener('click', () => {
             // handle error
         }).then(task => {
             // do something with the new task
+            // console.log(loginBtn);
             h3.innerHTML = `Signup successful!!`;
             h3.style.color = 'green';
-            div.appendChild(h3);
+            signUpForm.appendChild(h3);
         }).catch(error => {
             // handle error
             alert('not added!!!');
@@ -66,3 +96,134 @@ btn === null || btn === void 0 ? void 0 : btn.addEventListener('click', () => {
         h3.style.color = 'red';
     }
 });
+//////////////////////////////////////login//////////////////////////////////
+loginBtn.addEventListener('click', () => {
+    const url = new URL('https://673fa428a9bc276ec4b93059.mockapi.io/signupform/');
+    url.searchParams.append('email', email.value); //https://PROJECT_TOKEN.mockapi.io/tasks?completed=false
+    url.searchParams.append('password', pass.value); //https://PROJECT_TOKEN.mockapi.io/tasks?completed=false&page=1
+    fetch(url, {
+        method: 'GET',
+        headers: { 'content-type': 'application/json' },
+    }).then(res => {
+        if (res.ok) {
+            return res.json();
+        }
+        // handle error
+    }).then(tasks => {
+        /////////////////////////////////////////user login///////////////////////////////////////////////////////
+        let users = tasks.find((val) => inp[0].value == val.email && inp[1].value == val.password);
+        if (users) {
+            const wellcome = document.querySelector('.wellcome');
+            console.log(wellcome);
+            wellcome.innerHTML = `
+        <h5>wellcome: ${users.name}</h5>
+        <i class="bi bi-clipboard-check"></i>
+        `;
+            if (invalid) {
+                invalid.innerHTML = '';
+            }
+            setTimeout(() => {
+                const userWlc = document.querySelector('.userwlc');
+                userWlc === null || userWlc === void 0 ? void 0 : userWlc.classList.add('userlogined');
+                const Nav = document.createElement('nav');
+                Nav.innerHTML = `
+                <i class="bi bi-twitter-x" title="logOut"></i> 
+                <img src="asset/img/avatar.png" alt="">
+                <p>Hi, ${users.name} </p>
+                <ul>
+                <li>dashbord</li>
+                <li>setting</li>
+                <li>calender</li>
+                <li>tickets</li>
+                <li>contacts</li>
+                </ul>`;
+                userWlc === null || userWlc === void 0 ? void 0 : userWlc.appendChild(Nav);
+                const setting = Nav.querySelector('ul>li:nth-of-type(2)');
+                // console.log(setting);
+                // console.log(users.id);
+                setting === null || setting === void 0 ? void 0 : setting.addEventListener('click', () => {
+                    // console.log(users.id);
+                    // console.log(users.password);
+                    const settingDiv = document.querySelector('.setting');
+                    settingDiv.classList.add('set');
+                    // const setEdDiv=document.createElement('article')
+                    // setEdDiv.innerHTML=`
+                    // <h4>change name</h4>
+                    // <input type="text">
+                    // <h4>change password</h4>
+                    //   <input type="text">
+                    // `
+                    // settingDiv.appendChild(div)
+                    const settingDivChangeName = settingDiv.querySelector('input:nth-of-type(1)');
+                    const settingDivChangePassword = settingDiv.querySelector('input:nth-of-type(2)');
+                    const updatedName = (settingDivChangeName === null || settingDivChangeName === void 0 ? void 0 : settingDivChangeName.value) || users.name;
+                    const updatedPassword = (settingDivChangePassword === null || settingDivChangePassword === void 0 ? void 0 : settingDivChangePassword.value) || users.password;
+                    // console.log(settingDivChangeName);
+                    console.log(updatedName);
+                    console.log(updatedPassword);
+                    const changeConfirm = settingDiv.querySelector('button:nth-of-type(1)');
+                    changeConfirm === null || changeConfirm === void 0 ? void 0 : changeConfirm.addEventListener('click', () => {
+                        const updatedName = (settingDivChangeName === null || settingDivChangeName === void 0 ? void 0 : settingDivChangeName.value) || users.name;
+                        const updatedPassword = (settingDivChangePassword === null || settingDivChangePassword === void 0 ? void 0 : settingDivChangePassword.value) || users.password;
+                        fetch(`https://673fa428a9bc276ec4b93059.mockapi.io/signupform/` + users.id, {
+                            method: 'PUT',
+                            headers: { 'content-type': 'application/json' },
+                            body: JSON.stringify({
+                                name: updatedName,
+                                password: updatedPassword,
+                            }),
+                        })
+                            .then((res) => {
+                            if (res.ok)
+                                return res.json();
+                            throw new Error('Failed to update user');
+                        })
+                            .then((updatedUser) => {
+                            alert('Edit completed successfully!');
+                            console.log('Updated User:', updatedUser);
+                            location.reload();
+                        })
+                            .catch((error) => {
+                            console.error('Error updating user:', error);
+                            alert('Update failed.');
+                        });
+                    });
+                    const setCancel = settingDiv.querySelector('button:nth-of-type(2)');
+                    console.log(setCancel);
+                    setCancel.addEventListener('click', () => {
+                        settingDiv.classList.remove('set');
+                    });
+                });
+                const userWlcLogout = document.querySelector('.userwlc>Nav>i');
+                userWlcLogout === null || userWlcLogout === void 0 ? void 0 : userWlcLogout.addEventListener('click', () => {
+                    userWlc === null || userWlc === void 0 ? void 0 : userWlc.classList.remove('userlogined');
+                    wellcome.innerHTML = '';
+                });
+                console.log(users);
+            }, 1500);
+        }
+        else if (inp[0].value == 'Admin' && inp[1].value == 'Admin') {
+            window.location.href = 'https://alikhazaeii.github.io/adminPanel-secound-part-/';
+        }
+        else {
+            console.log(invalid);
+            if (invalid) {
+                invalid.innerHTML = `
+                <h5>email or password invalid</h5>
+                `;
+            }
+        }
+    }).catch(error => {
+        // handle error
+    });
+});
+// window.location.href=('https://alikhazaeii.github.io/adminPanel-secound-part-/')
+// mockapi returns first 10 tasks that are not completed
+const AdminPanel = document.querySelector('.adminpanel');
+const innerAdmin = document.createElement('span');
+innerAdmin.innerHTML = `
+<h6>AdminPAanel Email & Password</h6>
+<p>Email: Admin</p>
+<p>password: Admin</p>
+`;
+AdminPanel === null || AdminPanel === void 0 ? void 0 : AdminPanel.appendChild(innerAdmin);
