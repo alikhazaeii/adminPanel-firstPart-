@@ -136,7 +136,12 @@ loginBtn.addEventListener('click', () => {
                 <li>calender</li>
                 <li>tickets</li>
                 <li>contacts</li>
-                </ul>`;
+                </ul>
+                <i class="bi bi-trash3-fill" id="delete"></i>
+
+                `;
+                const SettingDelete = Nav.querySelector('i:nth-of-type(2)');
+                console.log(SettingDelete);
                 userWlc === null || userWlc === void 0 ? void 0 : userWlc.appendChild(Nav);
                 const setting = Nav.querySelector('ul>li:nth-of-type(2)');
                 // console.log(setting);
@@ -194,10 +199,44 @@ loginBtn.addEventListener('click', () => {
                         settingDiv.classList.remove('set');
                     });
                 });
+                //////////////////////////////////////////////////delet///////////////////////////////////////////////
+                SettingDelete === null || SettingDelete === void 0 ? void 0 : SettingDelete.addEventListener('click', () => {
+                    const deleteDiv = document.querySelector('.delete');
+                    console.log(deleteDiv);
+                    if (deleteDiv) {
+                        deleteDiv.innerHTML = `
+                                <p>Are you sure?</p>
+                                <button>yes</button>
+                                <button>no</button>
+                                `;
+                        deleteDiv.classList.add('divdelete');
+                    }
+                    const no = deleteDiv === null || deleteDiv === void 0 ? void 0 : deleteDiv.querySelector('button:nth-of-type(2)');
+                    no === null || no === void 0 ? void 0 : no.addEventListener('click', () => {
+                        deleteDiv === null || deleteDiv === void 0 ? void 0 : deleteDiv.classList.remove('divdelete');
+                    });
+                    const yes = deleteDiv === null || deleteDiv === void 0 ? void 0 : deleteDiv.querySelector('button:nth-of-type(1)');
+                    yes === null || yes === void 0 ? void 0 : yes.addEventListener('click', () => {
+                        fetch(`https://673fa428a9bc276ec4b93059.mockapi.io/signupform/` + users.id, {
+                            method: 'DELETE',
+                        }).then(res => {
+                            if (res.ok) {
+                                return res.json();
+                            }
+                            // handle error
+                        }).then(task => {
+                            // Do something with deleted task
+                            location.reload();
+                        }).catch(error => {
+                            // handle error
+                        });
+                    });
+                });
                 const userWlcLogout = document.querySelector('.userwlc>Nav>i');
                 userWlcLogout === null || userWlcLogout === void 0 ? void 0 : userWlcLogout.addEventListener('click', () => {
                     userWlc === null || userWlc === void 0 ? void 0 : userWlc.classList.remove('userlogined');
                     wellcome.innerHTML = '';
+                    location.reload();
                 });
                 console.log(users);
             }, 1500);

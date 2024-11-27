@@ -93,7 +93,7 @@ const invalid = document.querySelector('.invalid')
 
 signUpBtn?.addEventListener('click', () => {
     //    console.log(signUpBtn);
-        
+
 
     if (Name.value != '' && lastname.value != '' && email.value != '' && age.value != '' && pass.value != '') {
         // alert('ok')
@@ -203,9 +203,13 @@ loginBtn.addEventListener('click', () => {
                 <li>calender</li>
                 <li>tickets</li>
                 <li>contacts</li>
-                </ul>`
+                </ul>
+                <i class="bi bi-trash3-fill" id="delete"></i>
 
+                `
 
+                const SettingDelete = Nav.querySelector('i:nth-of-type(2)')
+                console.log(SettingDelete);
 
                 userWlc?.appendChild(Nav)
 
@@ -240,6 +244,10 @@ loginBtn.addEventListener('click', () => {
 
                     const changeConfirm = settingDiv.querySelector('button:nth-of-type(1)')
 
+
+
+
+
                     changeConfirm?.addEventListener('click', () => {
 
                         const updatedName = settingDivChangeName?.value || users.name;
@@ -271,6 +279,7 @@ loginBtn.addEventListener('click', () => {
                     })
 
 
+
                     const setCancel = settingDiv.querySelector('button:nth-of-type(2)') as HTMLButtonElement
                     console.log(setCancel);
                     setCancel.addEventListener('click', () => {
@@ -280,11 +289,55 @@ loginBtn.addEventListener('click', () => {
                 })
 
 
+                //////////////////////////////////////////////////delet///////////////////////////////////////////////
+
+
+                SettingDelete?.addEventListener('click', () => {
+                    const deleteDiv = document.querySelector('.delete')
+                    console.log(deleteDiv);
+                    if (deleteDiv) {
+                        deleteDiv.innerHTML = `
+                                <p>Are you sure?</p>
+                                <button>yes</button>
+                                <button>no</button>
+                                `
+                        deleteDiv.classList.add('divdelete')
+                    }
+                    const no = deleteDiv?.querySelector('button:nth-of-type(2)')
+                    no?.addEventListener('click', () => {
+                        deleteDiv?.classList.remove('divdelete')
+                    })
+
+                    const yes = deleteDiv?.querySelector('button:nth-of-type(1)')
+                    yes?.addEventListener('click', () => {
+                        fetch(`https://673fa428a9bc276ec4b93059.mockapi.io/signupform/` + users.id, {
+                            method: 'DELETE',
+                        }).then(res => {
+                            if (res.ok) {
+                                return res.json();
+                            }
+                            // handle error
+                        }).then(task => {
+                            // Do something with deleted task
+                            location.reload()
+                        }).catch(error => {
+                            // handle error
+                        })
+                    })
+
+
+                })
+
+
+
+
+
                 const userWlcLogout = document.querySelector('.userwlc>Nav>i')
 
                 userWlcLogout?.addEventListener('click', () => {
                     userWlc?.classList.remove('userlogined')
                     wellcome.innerHTML = ''
+                    location.reload()
                 })
                 console.log(users);
 
@@ -318,6 +371,7 @@ loginBtn.addEventListener('click', () => {
     })
 })
 
+
 // window.location.href=('https://alikhazaeii.github.io/adminPanel-secound-part-/')
 
 // mockapi returns first 10 tasks that are not completed
@@ -332,3 +386,6 @@ innerAdmin.innerHTML = `
 <p>password: Admin</p>
 `
 AdminPanel?.appendChild(innerAdmin)
+
+
+
